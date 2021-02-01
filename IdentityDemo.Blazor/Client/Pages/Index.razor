@@ -1,0 +1,38 @@
+﻿@page "/"
+@using System.Diagnostics
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<p>@Label</p>
+
+@code
+{
+    [Parameter]
+    public string Label { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        var startNew = Stopwatch.StartNew();
+        var authenticationStateAsync = AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        Label += startNew.ElapsedMilliseconds + "\r\n";
+        var authenticationState = await authenticationStateAsync;
+
+        Label += startNew.ElapsedMilliseconds + "\r\n";
+
+        //if (authenticationState.User.Identity!.IsAuthenticated == false)
+        //{
+        //    Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        //}
+    }
+}
